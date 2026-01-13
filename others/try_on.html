@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Virtual Try-On | Stylomind</title>
+  <link rel="stylesheet" href="try.css">
+</head>
+<body>
+
+<header id="main-header">
+  <div class="logo">Stylomind</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="product-details.html">Shop</a>
+    <a href="#" class="active">AI Try-On</a>
+    <a href="#">Cart (<span id="cart-count">0</span>)</a>
+    <a href="#">Profile</a>
+  </nav>
+</header>
+
+<div class="main-container">
+  
+  <!-- LEFT SIDE - PERMANENT DRESS AREA -->
+  <div class="permanent-section">
+    <h2>Your Virtual Model</h2>
+    
+    <div class="upload-area" onclick="triggerUpload()">
+      <div class="upload-icon">📷</div>
+      <p>Click to upload your photo</p>
+      <small>or use default model</small>
+      <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+    </div>
+    
+    <div class="model-image-container">
+      <img id="modelImage" src="" alt="Uploaded Model">
+      <div class="default-model" id="defaultModel">
+        <div class="icon"></div>
+        <p>Default Model</p>
+      </div>
+    </div>
+    
+    <div class="selected-products">
+      <h3>Selected Items</h3>
+      <div class="selected-items" id="selectedItems">
+        <!-- Selected items will appear here -->
+        <div class="selected-item">
+          Classic Dress <button class="remove" onclick="removeItem('Classic Dress')">×</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- RIGHT SIDE - PRODUCTS GRID -->
+  <div class="products-section">
+    <h2>Add Items to Try On</h2>
+    
+    <div class="products-grid">
+      <!-- Product 1 -->
+      <div class="product-card" data-id="1">
+        <div class="product-image">
+          <img src="../images/dress.PNG" alt="Classic Dress">
+        </div>
+        <div class="product-info">
+          <h3>Classic Dress</h3>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eius provident veritatis fugiat, veniam aliquid quisquam.</p>
+          <div class="product-actions">
+            <button class="btn-add" onclick="addProduct('Classic Dress', 1)">Add</button>
+            <button class="btn-details" onclick="showDetails(1)">View Details</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Product 2 -->
+      <div class="product-card" data-id="2">
+        <div class="product-image">
+          <img src="../images/bag.PNG" alt="Venety Bag">
+        </div>
+        <div class="product-info">
+          <h3>Venety Bag</h3>
+          <p>Modern street style with sustainable materials and smart temperature control.</p>
+          <div class="product-actions">
+            <button class="btn-add" onclick="addProduct('Venety Bag', 2)">Add</button>
+            <button class="btn-details" onclick="showDetails(2)">View Details</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Product 3 -->
+      <div class="product-card" data-id="3">
+        <div class="product-image">
+          <img src="../images/hat.PNG" alt="Hat">
+        </div>
+        <div class="product-info">
+          <h3>Hat</h3>
+          <p>Advanced foot support with activity tracking technology built-in.</p>
+          <div class="product-actions">
+            <button class="btn-add" onclick="addProduct('Hat', 3)">Add</button>
+            <button class="btn-details" onclick="showDetails(3)">View Details</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Product 4 -->
+      <div class="product-card" data-id="4">
+        <div class="product-image">
+          <img src="../images/shoes.PNG" alt="High hell">
+        </div>
+        <div class="product-info">
+          <h3>High hell</h3>
+          <p>Fitness tracking, notifications, and personalized health insights.</p>
+          <div class="product-actions">
+            <button class="btn-add" onclick="addProduct('High hell', 4)">Add</button>
+            <button class="btn-details" onclick="showDetails(4)">View Details</button>
+          </div>
+        </div>
+      </div>
+
+<!-- TRY ON BUTTON -->
+<button class="try-on-button" id="tryOnBtn" onclick="startTryOn()">
+  <span>🤖 Try On →</span>
+</button>
+
+<!-- POPUP MODAL FOR PRODUCT DETAILS -->
+<div class="modal-overlay" id="detailsModal">
+  <div class="modal-content">
+    <button class="close-modal" onclick="closeModal()">×</button>
+    <div class="modal-body" id="modalBody">
+      <!-- Content will be inserted here by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-content">
+    <h2 style="color: white; margin-bottom: 30px; font-size: 28px;">Generating Your AI Try-On</h2>
+    
+    <div class="loading-steps">
+      <div class="loading-step">
+        <div class="step-title">
+          <span>Processing Image</span>
+          <span class="step-percentage" id="step1Percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="step1Progress"></div>
+        </div>
+      </div>
+      
+      <div class="loading-step">
+        <div class="step-title">
+          <span>Generating AI Image</span>
+          <span class="step-percentage" id="step2Percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="step2Progress"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="final-image-container" id="finalImageContainer">
+      <img class="final-image" id="finalImage" src="" alt="AI Generated Try-On">
+      <div class="reveal-loading" id="revealLoading"></div>
+    </div>
+    
+    <button class="btn-primary" onclick="closeLoading()" style="margin-top: 20px; display: none;" id="closeBtn">
+      Close
+    </button>
+    <button class="btn-primary" onclick="saveImage()" style="margin-top: 20px; margin-left: 10px; display: none;" id="saveBtn">
+      Save Image
+    </button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-logo">Stylomind</div>
+    <p>Experience fashion like never before with our AI-powered virtual try-on technology.</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="product-details.html">Shop</a>
+      <a href="#" class="active">AI Try-On</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <div class="copyright">
+      © 2026 Stylomind — Virtual Try-On Experience. All rights reserved.
+    </div>
+  </div>
+</footer>
+<script src="try.js"></script>
+</body>
+</html>

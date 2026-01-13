@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Stylomind</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="tabs">
+      <div class="tab active" onclick="showForm('basic')" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') showForm('basic')">Basic Login</div>
+      <div class="tab" onclick="showForm('profile')" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') showForm('profile')">Smart Login</div>
+    </div>
+
+    <!-- BASIC LOGIN -->
+    <div id="basic" class="form active">
+      <h2>Login</h2>
+      <h3>Full Name:</h3>
+      <input type="text" placeholder="Full Name" required value="Ms. Gabrielle Kub"/>
+      <h3>Gmail:</h3>
+      <input type="email" placeholder="Gmail" required value="gabrielle1234@gmail.com"/>
+      <h3>Password:</h3>
+      <input type="password" placeholder="Password" required value="123456789"/>
+      <a href="./others/index.html"><button> Login</button></a>
+      <p class="note">Fast login for regular users</p>
+    </div>
+
+    <!-- PROFILE / BODY INFO LOGIN -->
+    <div id="profile" class="form">
+      <h2>Smart Profile Setup</h2>
+      <h3>Full Name:</h3>
+      <input type="text" placeholder="Full Name" required value="Ms. Gabrielle Kub"/>
+      <h3>Gmail:</h3>
+      <input type="email" placeholder="Gmail" required value="gabrielle1234@gmail.com"/>
+      <h3>Password:</h3>
+      <input type="password" placeholder="Password" required value="123456789"/>
+      <h3>Gender:</h3>
+      <select required>
+        <option value="">Select Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+      <h3>Height (cm):</h3>
+      <input type="number" placeholder="Height (cm)" min="50" max="250" value="160"/>
+      <h3>Weight (kg):</h3>
+      <input type="number" placeholder="Weight (kg)" min="20" max="200" value="52"/>
+      <h3>Chest Size (inch):</h3>
+      <input type="number" placeholder="Chest Size (inch)" min="20" max="60" value="32"/>
+      <h3>Waist Size (inch):</h3>
+      <input type="number" placeholder="Waist Size (inch)" min="20" max="60" value="35"/>
+      <h3>Hip Size (inch):</h3>
+      <input type="number" placeholder="Hip Size (inch)" min="20" max="60" value="30"/>
+
+      <input type="file" accept="image/*"/>
+
+      <a href="./others/index.html"><button>Create Profile & Login</button></a>
+      <p class="note">Photo is optional. Used for virtual fitting & AI recommendations.</p>
+    </div>
+  </div>
+  <script src="login.js"></script>
+</body>
+</html>
